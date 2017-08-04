@@ -1,0 +1,80 @@
+Extracting /tmp/tensorflow/mnist/input_data/train-images-idx3-ubyte.gz
+Extracting /tmp/tensorflow/mnist/input_data/train-labels-idx1-ubyte.gz
+Extracting /tmp/tensorflow/mnist/input_data/t10k-images-idx3-ubyte.gz
+Extracting /tmp/tensorflow/mnist/input_data/t10k-labels-idx1-ubyte.gz
+Saving graph to: /tmp/tmpc734rt3l
+2017-08-03 17:06:44.396713: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-08-03 17:06:44.396896: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-08-03 17:06:44.396963: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+
+
+
+Learning Rate:  0.1  Batch Size:  20  TEST number:  1
+														test accuracy 0.1009
+Learning Rate:  0.1  Batch Size:  60  TEST number:  2
+														test accuracy 0.1028
+Learning Rate:  0.1  Batch Size:  100  TEST number:  3
+														test accuracy 0.0974
+Learning Rate:  0.1  Batch Size:  140  TEST number:  4
+														test accuracy 0.1135
+Learning Rate:  0.1  Batch Size:  180  TEST number:  5
+														test accuracy 0.1135
+Learning Rate:  0.1  Batch Size:  220  TEST number:  6
+														test accuracy 0.1135
+
+
+Learning Rate:  0.01  Batch Size:  20  TEST number:  7
+														test accuracy 0.101
+Learning Rate:  0.01  Batch Size:  60  TEST number:  8
+														test accuracy 0.8616
+Learning Rate:  0.01  Batch Size:  100  TEST number:  9
+														test accuracy 0.9221
+Learning Rate:  0.01  Batch Size:  140  TEST number:  10
+														test accuracy 0.1028
+Learning Rate:  0.01  Batch Size:  180  TEST number:  11
+
+Learning Rate:  0.01  Batch Size:  220  TEST number:  12
+														test accuracy 0.1028
+
+
+
+Learning Rate:  0.001  Batch Size:  20  TEST number:  13
+														test accuracy 0.9139
+Learning Rate:  0.001  Batch Size:  60  TEST number:  14
+														test accuracy 0.9495
+Learning Rate:  0.001  Batch Size:  100  TEST number:  15
+														test accuracy 0.9585
+Learning Rate:  0.001  Batch Size:  140  TEST number:  16
+														test accuracy 0.9564
+Learning Rate:  0.001  Batch Size:  180  TEST number:  17
+														test accuracy 0.9614
+Learning Rate:  0.001  Batch Size:  220  TEST number:  18
+														test accuracy 0.9659
+
+
+Learning Rate:  0.0001  Batch Size:  20  TEST number:  19
+														test accuracy 0.7782
+Learning Rate:  0.0001  Batch Size:  60  TEST number:  20
+														test accuracy 0.8624
+Learning Rate:  0.0001  Batch Size:  100  TEST number:  21
+														test accuracy 0.8818
+Learning Rate:  0.0001  Batch Size:  140  TEST number:  22
+														test accuracy 0.8838
+Learning Rate:  0.0001  Batch Size:  180  TEST number:  23
+														test accuracy 0.8976
+Learning Rate:  0.0001  Batch Size:  220  TEST number:  24
+														test accuracy 0.893
+
+
+Learning Rate:  1e-05  Batch Size:  20  TEST number:  25
+														test accuracy 0.2129
+Learning Rate:  1e-05  Batch Size:  60  TEST number:  26
+														test accuracy 0.3112
+Learning Rate:  1e-05  Batch Size:  100  TEST number:  27
+														test accuracy 0.3852
+Learning Rate:  1e-05  Batch Size:  140  TEST number:  28
+														test accuracy 0.3772
+Learning Rate:  1e-05  Batch Size:  180  TEST number:  29
+														test accuracy 0.359
+Learning Rate:  1e-05  Batch Size:  220  TEST number:  30
+														test accuracy 0.3073
