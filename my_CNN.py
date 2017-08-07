@@ -18,9 +18,6 @@
 See extensive documentation at
 https://www.tensorflow.org/get_started/mnist/pros
 """
-# Disable linter warnings to maintain consistency with tutorial.
-# pylint: disable=invalid-name
-# pylint: disable=g-bad-import-order
 
 from __future__ import absolute_import
 from __future__ import division
@@ -38,26 +35,13 @@ FLAGS = None
 
 #-----------------------HYPERPARAMETERS-----------------------
 
-
+learning_rate = 1e-3
+batch_size = 100
+training_iteration = 200
 
 #-----------------------HYPERPARAMETERS-----------------------
 
 def deepnn(x):
-  """deepnn builds the graph for a deep net for classifying digits.
-
-  Args:
-    x: an input tensor with the dimensions (N_examples, 784), where 784 is the
-    number of pixels in a standard MNIST image.
-
-  Returns:
-    A tuple (y, keep_prob). y is a tensor of shape (N_examples, 10), with values
-    equal to the logits of classifying the digit into one of 10 classes (the
-    digits 0-9). keep_prob is a scalar placeholder for the probability of
-    dropout.
-  """
-  # Reshape to use within a convolutional neural net.
-  # Last dimension is for "features" - there is only one here, since images are
-  # grayscale -- it would be 3 for an RGB image, 4 for RGBA, etc.
 
   x_images = tf.reshape(x, [-1 , 28 , 28 ,1])
 
@@ -136,15 +120,15 @@ def main(_):
 
   y_ = tf.placeholder(tf.float32 , [None , 10])
 
-  y_conv , kep_prob = deepnn(x)
+  y_conv , keep_prob = deepnn(x)
 
 
-  cross_entropy = tf.nn.softmax_cross_entropy_with_logits(y_ , y_conv)
+  cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_ , logits=y_conv)
   cross_entropy = tf.reduce_mean(cross_entropy)
 
 
   correct_prediction = tf.equal(tf.argmax(y_,1) , tf.argmax(y_conv,1) )
-  correct_prediction = tf.cast(cross_prediction , tf.float32)
+  correct_prediction = tf.cast(correct_prediction , tf.float32)
 
   accuracy = tf.reduce_mean(correct_prediction)
 
@@ -154,20 +138,11 @@ def main(_):
     sess.run(tf.global_variables_initializer())
 
     for i in range(training_iteration):
-      batch = tf.mnist.next_batch(batch_size)
+      batch = mnist.train.next_batch(batch_size)
 
       train_step.run(feed_dict={x: batch[0] , y_:batch[1] , keep_prob: 0.5})
 
-    print("Accuracy: %g" % accuracy.eval(feed_dict={x: mnist_test.images , y_: mnist_test_labels , keep_prob: 1.0}))
-
-
-
-
-
-
-
-
-
+    print("Accuracy: %g" % accuracy.eval(feed_dict={x: mnist.test.images , y_: mnist.test.labels , keep_prob: 1.0}))
 
 
 if __name__ == '__main__':
