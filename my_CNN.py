@@ -31,15 +31,32 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 import tensorflow as tf
 
+import numpy as np 
+import matplotlib as mp
+mp.use('Agg')
+#%matplotlib inline
+import matplotlib.pyplot as plt
+import tensorflow as tf
+import tensorflow.contrib.slim as slim
+from tensorflow.examples.tutorials.mnist import input_data
+import math
+
 FLAGS = None
 
 #-----------------------HYPERPARAMETERS-----------------------
 
 learning_rate = 1e-3
 batch_size = 100
-training_iteration = 200
+training_iteration = 50
 
 #-----------------------HYPERPARAMETERS-----------------------
+def id(array):
+    id = 0
+    for i in range(0,5):
+        for j in range(0,5):
+            id += array[i][j]
+    return id
+
 
 def deepnn(x):
 
@@ -50,6 +67,8 @@ def deepnn(x):
   W_conv1 = weight_variable([5,5,1,32])
   b_conv1 = bias_variable([32])
   h_conv1 = tf.nn.relu(conv2d(x_images,W_conv1) + b_conv1)
+
+
 
   #pool1
 
@@ -86,7 +105,8 @@ def deepnn(x):
     b_fc2 = bias_variable([10])
 
     y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
-  return y_conv, keep_prob
+
+  return y_conv, keep_prob , W_conv1 , W_conv2 , h_conv1 , h_conv2
 
 
 def conv2d(x, W):
@@ -112,6 +132,9 @@ def bias_variable(shape):
   return tf.Variable(initial)
 
 
+image_id_file = open('image_id_file.txt' , 'w')
+
+
 def main(_):
 
   mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)
@@ -120,7 +143,7 @@ def main(_):
 
   y_ = tf.placeholder(tf.float32 , [None , 10])
 
-  y_conv , keep_prob = deepnn(x)
+  y_conv , keep_prob , W_conv1 , W_conv2, h_conv1 , h_conv2 = deepnn(x)
 
 
   cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_ , logits=y_conv)
@@ -134,6 +157,23 @@ def main(_):
 
   train_step = tf.train.AdamOptimizer(learning_rate).minimize(cross_entropy)
 
+
+  ####################################################################
+  W_conv1_filters = []
+  for i in range(0,32):
+    conv1_filter = tf.reshape(W_conv1[:,:,:,i] , [5,5])
+    W_conv1_filters.append(conv1_filter)
+
+  
+  W_conv2_filters = []
+  for v in range(0,2):
+    for c in range(0,64):
+      conv2_filter = tf.reshape(W_conv2[:,:,v,c] , [5,5])
+      W_conv2_filters.append(conv2_filter)
+    
+    W_conv2_filters.append(tf.reshape([[0,0,0,0,0],[0,0,50,0,0],[0,0,0,0,0],[0,0,20,0,0],[0,80,0,0,0]] , [5,5]))
+  ####################################################################
+
   with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
 
@@ -143,6 +183,85 @@ def main(_):
       train_step.run(feed_dict={x: batch[0] , y_:batch[1] , keep_prob: 0.5})
 
     print("Accuracy: %g" % accuracy.eval(feed_dict={x: mnist.test.images , y_: mnist.test.labels , keep_prob: 1.0}))
+    k = 1
+    for W_conv1_filter  in W_conv1_filters :
+      image_array1 = sess.run(W_conv1_filter)
+      
+      plt.figure(1 , figsize=(10,10))
+      plt.subplot(6,6,k)
+      plt.title(' ')
+    	
+      #interpolations = [None , "nearest" ,"bilinear" , "bicubic" , "gaussian"]
+    	
+      plt.imshow(image_array1, interpolation="none", cmap="gray" )
+      k += 1
+
+    plt.show()
+    plt.savefig('First_Layer_Filters')
+
+    m = 1
+
+    for W_conv2_filter  in W_conv2_filters :
+      image_array2 = sess.run(W_conv2_filter)
+      
+      plt.figure(1 , figsize=(10,10))
+      plt.subplot(17,8,m)
+      image_id = str(id(image_array2))
+      image_id_file.write(image_id)
+      image_id_file.write('\n')
+      
+      plt.title(' ')
+    	
+      #interpolations = [None , "nearest" ,"bilinear" , "bicubic" , "gaussian"]
+    	
+      plt.imshow(image_array2, interpolation="none", cmap="gray" )
+      m += 1
+
+    plt.show()
+    plt.savefig('Second_Layer_Filters')
+
+    image_to_visualize_1 = np.reshape(mnist.test.images[7] , (1,784)) 
+
+    sample_image = sess.run(h_conv1, feed_dict={x: image_to_visualize_1})
+
+    print(sample_image.shape)
+
+    
+
+    sample_images = np.reshape(sample_image[0,:,:,0] ,(28,28) )
+    
+    print(sample_image.shape)
+    
+    for z in range(1,13):
+        plt.figure(1 , figsize=(10,10))
+        plt.subplot(4,3,z)
+        plt.imshow(sample_image[0,:,:,z], interpolation="none", cmap="gray" )
+    plt.show()
+
+    plt.savefig('sample_image_0') 
+
+    #---------------------------------------------------------------
+     
+    image_to_visualize_2 = np.reshape(mnist.test.images[7] , (1,784)) 
+
+    sample_image_2 = sess.run(h_conv2, feed_dict={x: image_to_visualize_2})
+
+    print(sample_image_2.shape)
+
+    
+
+    #sample_image_2 = np.reshape(sample_image_2[0,:,:,:] ,(14,14,64) )
+    
+    print(sample_image_2.shape)
+    
+    for t in range(1,13):
+        plt.figure(1 , figsize=(10,10))
+        plt.subplot(4,3,t)
+        plt.imshow(sample_image_2[0,:,:,t], interpolation="none", cmap="gray" )
+    plt.show()
+
+    plt.savefig('sample_image_2')
+
 
 
 if __name__ == '__main__':
